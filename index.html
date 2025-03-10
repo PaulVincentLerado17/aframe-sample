@@ -1,17 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame Example</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-</head>
-<body>
-    <a-scene>
-        <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-        <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
-        <a-sky color="#ECECEC"></a-sky>
-    </a-scene>
-</body>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Peachtree Corners Veterans Monument - A-Frame</title>
+        <meta name="description" content="Peachtree Corners Veterans Monument!">
+        <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-orbit-controls-component@master/dist/aframe-orbit-controls-component.min.js"></script>
+        <script src="https://button.glitch.me/button.js"></script>  
+    </head> 
+    <body> 
+        <a-scene>
+            <a-assets>
+                <a-asset-item id="scene" src="./scene.gltf"></a-asset-item>
+            </a-assets>
+              
+            <a-entity gltf-model="#scene" id="target"></a-entity>
+
+            <!-- Orbit controls camera -->
+            <a-entity id="cameraRig" position="0 1.6 5">
+                <a-camera orbit-controls="target: #target; enableDamping: true; dampingFactor: 0.1; rotateSpeed: 0.3; minDistance: 2; maxDistance: 20"></a-camera>
+            </a-entity>
+    
+        </a-scene>
+        <div class="glitchButton"></div>
+    </body>
 </html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>A-Frame using a Camera with Orbit Controls</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-orbit-controls-component@1.1.0/dist/aframe-orbit-controls-component.min.js"></script>
+</head>
+
+<body>
+    <a-scene>
+        <!-- Camera with Orbit Controls -->
+        <a-entity
+            id="camera"
+            camera
+            position="0 0 5"
+            orbit-controls="
+                autoRotate: false;
+                target: #target;
+                enableDamping: true;
+                dampingFactor: 0.25;
+                rotateSpeed: 0.14;
+                minDistance: 3;
+                maxDistance: 15;">
+        </a-entity>
+
+        <!-- Assets -->
+        <a-assets>
+            <a-asset-item id="scene" src="./scene.gltf"></a-asset-item>
+        </a-assets>
+
+        <!-- 3D Model -->
+        <a-entity gltf-model="#scene" id="target"></a-entity>
+
+        <!-- Background Sky -->
+        <a-sky color="#FFFFFF"></a-sky>
+    </a-scene>
+</body>
+</html>
