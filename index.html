@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AR Scene with Movable Objects</title>
     <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/AR.js/aframe/build/aframe-ar.min.js"></script>
     <script>
         AFRAME.registerComponent('rotate-on-click', {
             schema: {
@@ -15,30 +16,12 @@
             },
             init: function () {
                 this.rotationDirection = 1;
-                this.animationComplete = true,
-                this.el.addEventListener('click', this.onClick.bind(this));
-                this.el.addEventListener('animationcomplete', this.onAnimationComplete.bind(this));
+                this.animationComplete = true;
+                this.onClick = this.onClick.bind(this);
+                this.el.addEventListener('click', this.onClick);
             },
-            update: function (oldData) {
-                if (oldData.easing !== this.data.easing ||
-                    oldData.duration !== this.data.duration ||
-                    oldData.degrees !== this.data.degrees ||
-                    !AFRAME.utils.deepEqual(oldData.axis, this.data.axis)) {
-                        this.removeAnimation();
-                        this.setupAnimation();
-                    }
-            },
-
-            remove: function () {
-                this.el.removeEventListener('click', this.onClick);
-                this.el.removeEventListener('animationcomplete', this.onAnimationComplete);
-                this.removeAnimation();
-            },
-
             onClick: function () {
-                if (!this.animationComplete) {
-                    return;
-                }
+                if (!this.animationComplete) return;
 
                 const currentRotation = this.el.getAttribute('rotation');
                 const axis = this.data.axis;
@@ -50,60 +33,50 @@
 
                 this.el.setAttribute('animation', {
                     property: 'rotation',
-                    to: targetRotation,
+                    to: `${targetRotation.x} ${targetRotation.y} ${targetRotation.z}`,
                     easing: this.data.easing,
                     dur: this.data.duration,
+                    autoplay: true
                 });
 
                 this.animationComplete = false;
+                setTimeout(() => {
+                    this.animationComplete = true;
+                    this.rotationDirection *= -1;
+                }, this.data.duration);
             },
+            remove: function () {
+                this.el.removeEventListener('click', this.onClick);
+            }
+        });
 
-            onAnimationComplete: function () {
-                this.animationComplete = true;
-                this.rotationDirection *= -1;
-            },
-
-            removeAnimation: function () {
-                this.el.removeAttribute('animation');
-            },
-
-            setupAnimation: function () {
-                this.el.setAttribute('animation', {
-                    property: 'animation',
-                    easing: this.data.easing,
-                    dur: this.data.duration,
+        AFRAME.registerComponent('movable', {
+            init: function () {
+                this.direction = 1;
+                this.el.addEventListener('click', () => {
+                    const currentPosition = this.el.getAttribute('position');
+                    const newPosition = {
+                        x: currentPosition.x + this.direction * 0.5,
+                        y: currentPosition.y,
+                        z: currentPosition.z
+                    };
+                    this.el.setAttribute('position', newPosition);
+                    this.direction *= -1;
                 });
-            },
+            }
         });
     </script>
 </head>
-<body>
-    <a-scene background="#FFFFF">
-        <a-entity rotation="0 0 0" position="0 1.6 -2">
+<body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs>
+        <a-marker preset="hiro">
+            <a-box class="clickable" color="#FF7700" scale="1 1 0.1" position="-0.75 0 0"
+                   rotate-on-click></a-box>
+            <a-box class="clickable" color="#FF7700" scale="1 1 0.1" position="0.75 0 0"
+                   rotate-on-click></a-box>
+        </a-marker>
 
-
-              <!-- Moved this box to the right by adjusting the position -->
-              <a-box class="clickable" color="#FF7700" scale="1 1 0.1" position="-1.5 0 0.1"
-rotate-on-click="axis: 1 0 0; degrees: -180; duration: 500;">
-</a-box>
-
-
-              
-            <a-box class="clickable" color="#FF7700" scale="1 1 0.1" 
-            rotate-on-click="axis: 1 0 0; degrees: -180; duration: 500;">
-            </a-box>
-
-          
-
-        </a-entity>
-        <a-camera>
-            <a-cursor raycaster = "objects: .clickable"></a-cursor> 
-            <a-cursor raycaster = "objects: .clickable2"></a-cursor> 
-            
-        </a-camera>
-
-
-
-    
+        <a-entity camera></a-entity>
+    </a-scene>
 </body>
 </html>
