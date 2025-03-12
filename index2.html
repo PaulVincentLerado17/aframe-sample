@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Change Cursor on Click</title>
+    <title>Document</title>
     <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
     <script>
         AFRAME.registerComponent('rotate-on-click', {
@@ -15,13 +15,28 @@
             },
             init: function () {
                 this.rotationDirection = 1;
-                this.animationComplete = true;
+                this.animationComplete = true,
                 this.el.addEventListener('click', this.onClick.bind(this));
                 this.el.addEventListener('animationcomplete', this.onAnimationComplete.bind(this));
             },
+            update: function (oldData) {
+                if (oldData.easing !== this.data.easing ||
+                    oldData.duration !== this.data.duration ||
+                    oldData.degrees !== this.data.degrees ||
+                    !AFRAME.utils.deepEqual(oldData.axis, this.data.axis)) {
+                        this.removeAnimation();
+                        this.setupAnimation();
+                    }
+            },
 
-            onClick: function (event) {
-                if (!this.animationComplete || event.detail.intersectedEl !== this.el) {
+            remove: function () {
+                this.el.removeEventListener('click', this.onClick);
+                this.el.removeEventListener('animationcomplete', this.onAnimationComplete);
+                this.removeAnimation();
+            },
+
+            onClick: function () {
+                if (!this.animationComplete) {
                     return;
                 }
 
@@ -46,47 +61,47 @@
             onAnimationComplete: function () {
                 this.animationComplete = true;
                 this.rotationDirection *= -1;
-            }
-        });
+            },
 
-        // Component to change cursor when clicking on an object
-        AFRAME.registerComponent('change-cursor-on-click', {
-            init: function () {
-                this.el.addEventListener('click', (event) => {
-                    if (event.detail.intersectedEl !== this.el) return;
+            removeAnimation: function () {
+                this.el.removeAttribute('animation');
+            },
 
-                    // Change cursor to pointer when clicking
-                    document.body.style.cursor = "pointer";
-
-                    // Reset cursor after 500ms
-                    setTimeout(() => {
-                        document.body.style.cursor = "default";
-                    }, 500);
+            setupAnimation: function () {
+                this.el.setAttribute('animation', {
+                    property: 'animation',
+                    easing: this.data.easing,
+                    dur: this.data.duration,
                 });
-            }
+            },
         });
-
     </script>
 </head>
 <body>
     <a-scene background="#FFFFF">
         <a-entity rotation="0 0 0" position="0 1.6 -2">
-            <!-- Box 1 -->
-            <a-box class="clickable" color="#FF7700" scale="1 1 0.1" position="-1.5 0 0.1"
-                rotate-on-click="axis: 1 0 0; degrees: -180; duration: 500;"
-                change-cursor-on-click>
-            </a-box>
 
-            <!-- Box 2 -->
+
+              <!-- Moved this box to the right by adjusting the position -->
+              <a-box class="clickable2" color="#FF7700" scale="1 1 0.1" position="-1.5 0 0.1"
+rotate-on-click="axis: 1 0 0; degrees: -180; duration: 500;">
+</a-box>
+
+
+              
             <a-box class="clickable" color="#FF7700" scale="1 1 0.1" 
-                rotate-on-click="axis: 1 0 0; degrees: -180; duration: 500;"
-                change-cursor-on-click>
+            rotate-on-click="axis: 1 0 0; degrees: -180; duration: 500;">
             </a-box>
-        </a-entity>
 
+          
+
+        </a-entity>
         <a-camera>
-            <a-cursor raycaster="objects: .clickable"></a-cursor> 
+            <a-cursor raycaster = "objects: .clickable"></a-cursor> 
+            <a-cursor raycaster = "objects: .clickable2"></a-cursor> 
         </a-camera>
+
     </a-scene>
+    
 </body>
 </html>
