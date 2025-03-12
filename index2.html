@@ -1,38 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>A-Frame using a Camera with Orbit Controls</title>
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-orbit-controls-component@1.1.0/dist/aframe-orbit-controls-component.min.js"></script>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Cursor on Click</title>
+    <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+    <script>
+        AFRAME.registerComponent('rotate-on-click', {
+            schema: {
+                easing: { default: 'easeInOutQuad' },
+                duration: { default: 500 },
+                degrees: { default: 180 },
+                axis: { type: 'vec3', default: { x: 1, y: 0, z: 0 } },
+            },
+            init: function () {
+                this.rotationDirection = 1;
+                this.animationComplete = true;
+                this.el.addEventListener('click', this.onClick.bind(this));
+                this.el.addEventListener('animationcomplete', this.onAnimationComplete.bind(this));
+            },
 
+            onClick: function (event) {
+                if (!this.animationComplete || event.detail.intersectedEl !== this.el) {
+                    return;
+                }
+
+                const currentRotation = this.el.getAttribute('rotation');
+                const axis = this.data.axis;
+                const targetRotation = {
+                    x: currentRotation.x + axis.x * this.data.degrees * this.rotationDirection,
+                    y: currentRotation.y + axis.y * this.data.degrees * this.rotationDirection,
+                    z: currentRotation.z + axis.z * this.data.degrees * this.rotationDirection,
+                };
+
+                this.el.setAttribute('animation', {
+                    property: 'rotation',
+                    to: targetRotation,
+                    easing: this.data.easing,
+                    dur: this.data.duration,
+                });
+
+                this.animationComplete = false;
+            },
+
+            onAnimationComplete: function () {
+                this.animationComplete = true;
+                this.rotationDirection *= -1;
+            }
+        });
+
+        // Component to change cursor when clicking on an object
+        AFRAME.registerComponent('change-cursor-on-click', {
+            init: function () {
+                this.el.addEventListener('click', (event) => {
+                    if (event.detail.intersectedEl !== this.el) return;
+
+                    // Change cursor to pointer when clicking
+                    document.body.style.cursor = "pointer";
+
+                    // Reset cursor after 500ms
+                    setTimeout(() => {
+                        document.body.style.cursor = "default";
+                    }, 500);
+                });
+            }
+        });
+
+    </script>
+</head>
 <body>
-    <a-scene>
-        <!-- Camera with Orbit Controls -->
-        <a-entity
-            id="camera"
-            camera
-            position="0 0 5"
-            orbit-controls="
-                autoRotate: false;
-                target: #target;
-                enableDamping: true;
-                dampingFactor: 0.25;
-                rotateSpeed: 0.14;
-                minDistance: 3;
-                maxDistance: 15;">
+    <a-scene background="#FFFFF">
+        <a-entity rotation="0 0 0" position="0 1.6 -2">
+            <!-- Box 1 -->
+            <a-box class="clickable" color="#FF7700" scale="1 1 0.1" position="-1.5 0 0.1"
+                rotate-on-click="axis: 1 0 0; degrees: -180; duration: 500;"
+                change-cursor-on-click>
+            </a-box>
+
+            <!-- Box 2 -->
+            <a-box class="clickable" color="#FF7700" scale="1 1 0.1" 
+                rotate-on-click="axis: 1 0 0; degrees: -180; duration: 500;"
+                change-cursor-on-click>
+            </a-box>
         </a-entity>
 
-        <!-- Assets -->
-        <a-assets>
-            <a-asset-item id="scene" src="./scene.gltf"></a-asset-item>
-        </a-assets>
-
-        <!-- 3D Model -->
-        <a-entity gltf-model="#scene" id="target"></a-entity>
-
-        <!-- Background Sky -->
-        <a-sky color="#FFFFFF"></a-sky>
+        <a-camera>
+            <a-cursor raycaster="objects: .clickable"></a-cursor> 
+        </a-camera>
     </a-scene>
 </body>
 </html>
