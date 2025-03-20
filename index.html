@@ -1,100 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Interactive Objects</title>
-    <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
-    <script>
-        AFRAME.registerComponent('rotate-on-click', {
-            schema: {
-                easing: { default: 'easeInOutQuad' },
-                duration: { default: 500 },
-                degrees: { default: 180 },
-                axis: { type: 'vec3', default: { x: 0, y: 1, z: 0 } },
-            },
-            init: function () {
-                this.rotationDirection = 1;
-                this.animationComplete = true;
-                this.onClick = this.onClick.bind(this);
-                this.el.addEventListener('click', this.onClick);
-            },
-            onClick: function () {
-                if (!this.animationComplete) return;
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
+    <title>A-Frame Box Click Change Size</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"
+               event-set__down="_event: mousedown; material.wireframe: true"
+               event-set__up="_event: mouseup; material.wireframe: false"
+               event-set__leave="_event: mouseleave; material.wireframe: false"></a-plane>
 
-                const currentRotation = this.el.getAttribute('rotation');
-                const axis = this.data.axis;
-                const targetRotation = {
-                    x: currentRotation.x + axis.x * this.data.degrees * this.rotationDirection,
-                    y: currentRotation.y + axis.y * this.data.degrees * this.rotationDirection,
-                    z: currentRotation.z + axis.z * this.data.degrees * this.rotationDirection,
-                };
+      <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"
+                  event-set__enter="_event: mouseenter; _target: #cylinderText1; visible: true"
+                  event-set__leave="_event: mouseleave; _target: #cylinderText1; visible: false">
+        <a-text id="cylinderText1" value="Welcome" align="center" color="#FFF" visible="false" position="0 0 0.55"
+                geometry="primitive: plane; width: 2" material="color: #333"></a-text>
+      </a-cylinder>
 
-                this.el.setAttribute('animation', {
-                    property: 'rotation',
-                    to: `${targetRotation.x} ${targetRotation.y} ${targetRotation.z}`,
-                    easing: this.data.easing,
-                    dur: this.data.duration,
-                    autoplay: true
-                });
+      <a-cylinder position="3 0.75 -2" radius="0.5" height="1.5" color="#FFC65D"
+                  event-set__enter="_event: mouseenter; _target: #cylinderText2; visible: true"
+                  event-set__leave="_event: mouseleave; _target: #cylinderText2; visible: false">
+        <a-plane id="cylinderText2" rotation="0 -75 0" align="center" color="#FFF" visible="false" position="-0.7 -0.2 0" 
+                 geometry="primitive: plane; width: 2" material="color: #333"
+                 rotation="0 15 0">
+          <a-text value="This is a cylinder" align="center"></a-text>
+        </a-plane>
+      </a-cylinder>
 
-                this.animationComplete = false;
-                setTimeout(() => {
-                    this.animationComplete = true;
-                    this.rotationDirection *= -1;
-                }, this.data.duration);
-            },
-            remove: function () {
-                this.el.removeEventListener('click', this.onClick);
-            }
-        });
+   
 
-        AFRAME.registerComponent('movable', {
-            init: function () {
-                this.direction = 1;
-                this.el.addEventListener('click', () => {
-                    const currentPosition = this.el.getAttribute('position');
-                    const newPosition = {
-                        x: currentPosition.x + this.direction * 0.5,
-                        y: currentPosition.y,
-                        z: currentPosition.z
-                    };
-                    this.el.setAttribute('position', newPosition);
-                    this.direction *= -1;
-                });
-            }
-        });
 
-        AFRAME.registerComponent('tap-to-place', {
-            init: function () {
-                const sceneEl = document.querySelector('a-scene');
-                this.el.addEventListener('click', () => {
-                    sceneEl.xrSession.requestHitTestSource({ space: sceneEl.renderer.xr.getReferenceSpace() })
-                        .then(hitTestSource => {
-                            this.hitTestSource = hitTestSource;
-                        });
-                });
-            }
-        });
-    </script>
-</head>
-<body>
-    <a-scene webxr="optionalFeatures: hit-test;">
-        <a-light type="ambient" color="#888"></a-light>
-        <a-light type="directional" intensity="0.5" position="0 4 -2"></a-light>
+             <a-entity id="mouseCursor" cursor="rayOrigin: mouse">
+                <a-box id="resizableBox" position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"
+             event-set__enter="_event: mouseenter; color: #8FF7FF"
+             event-set__leave="_event: mouseleave; color: #4CC3D9"></a-box>
+             </a-entity>
 
-        <a-camera position="0 1.6 0">
-            <a-cursor raycaster="objects: .clickable"></a-cursor>
-        </a-camera>
+             <!-- <a-entity
+               geometry="primitive: box"
+               material="color: red"
+               animation__mouseenter="property: components.material.material.color; type: color; to: blue; startEvents: mouseenter; dur: 500";
+               animation__mouseleave="property: components.material.material.color; type: color; to: red; startEvents: mouseleave; dur: 500";
+               animation__customevent="property: components.material.material.color; type: color; from: red; to: blue; startEvents: triggeranimation; dur: 500";>
+             </a-entity> -->
 
-        <!-- AR Interactable Boxes -->
-        <a-entity position="0 1 -2">
-            <a-box class="clickable" color="#FF7700" scale="0.3 0.3 0.3" position="-0.5 0 0"
-                   rotate-on-click ></a-box>
-            <a-box class="clickable" color="#0077FF" scale="0.3 0.3 0.3" position="0.5 0 0"
-                   rotate-on-click ></a-box>
-        </a-entity>
+      <a-camera>
+        <a-cursor></a-cursor>
+      </a-camera>
     </a-scene>
-</body>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var box = document.querySelector("#resizableBox");
+
+        // Listen for clicks on the box only
+        box.addEventListener("click", function(event) {
+          event.stopPropagation(); // Prevent event bubbling
+          
+          // Toggle between original and enlarged size
+          var currentScale = box.getAttribute("scale") || { x: 1, y: 1, z: 1 };
+          var newScale = (currentScale.x === 1) ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
+          
+          box.setAttribute("scale", newScale);
+        });
+      });
+    </script>
+  </body>
 </html>
