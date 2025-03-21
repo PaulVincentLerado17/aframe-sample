@@ -1,71 +1,72 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>AR.js UI and Events Example</title>
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <!-- Import AR.js version without NFT but with marker + location-based support -->
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR.js Click Event Example</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.min.js"></script>
     <style>
-      .buttons {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 5em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 10;
-      }
-
-      .say-hi-button {
-        padding: 0.25em;
-        border-radius: 4px;
-        border: none;
-        background: white;
-        color: black;
-        width: 4em;
-        height: 2em;
-      }
+        .buttons {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .say-hi-button {
+            padding: 10px 20px;
+            border: none;
+            background: white;
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
-  </head>
-  <body style="margin: 0px; overflow: hidden;">
-    <!-- AR.js Scene -->
+</head>
+<body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs>
-      <!-- Marker Definition -->
-      <a-marker preset="hiro">
-        <!-- 3D Model Entity -->
-        <a-entity
-          id="model"
-          position="0 0 0"
-          scale="0.05 0.05 0.05"
-          gltf-model="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
-        ></a-entity>
-      </a-marker>
-      <a-entity camera></a-entity>
+        <!-- Add a cursor so we can interact with objects -->
+        <a-entity camera position="0 1.6 0">
+            <a-cursor></a-cursor>
+        </a-entity>
+
+        <!-- AR Marker -->
+        <a-marker preset="hiro">
+            <!-- Clickable 3D Model -->
+            <a-entity id="clickable-model"
+                      gltf-model="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/Duck/glTF/Duck.gltf"
+                      position="0 0 0"
+                      scale="0.5 0.5 0.5"
+                      rotation="0 180 0"
+                      class="clickable">
+            </a-entity>
+        </a-marker>
     </a-scene>
 
-    <!-- Overlayed DOM Content -->
+    <!-- UI Button -->
     <div class="buttons">
-      <button class="say-hi-button">Say Hi</button>
+        <button class="say-hi-button">Say Hi</button>
     </div>
 
     <script>
-      window.onload = function () {
-        // Add click event listener to the button
-        document
-          .querySelector(".say-hi-button")
-          .addEventListener("click", function () {
-            alert("Hi there!");
-          });
+        window.onload = function () {
+            // Handle button click
+            document.querySelector(".say-hi-button").addEventListener("click", function () {
+                alert("Hi there!");
+            });
 
-        // Add click event listener to the 3D model
-        document
-          .querySelector("#model")
-          .addEventListener("click", function () {
-            alert("3D model clicked!");
-          });
-      };
+            // Handle AR object click
+            let model = document.querySelector("#clickable-model");
+
+            model.addEventListener("mouseenter", function () {
+                console.log("Model Hovered!");
+            });
+
+            model.addEventListener("click", function () {
+                alert("You clicked the 3D model!");
+            });
+        };
     </script>
-  </body>
+</body>
 </html>
