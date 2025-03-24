@@ -9,7 +9,6 @@
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <!-- Latest AR.js -->
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.min.js"></script>
-
 </head>
 
 <body style="margin: 0px; overflow: hidden;">
@@ -32,8 +31,8 @@
         <!-- Custom Pattern Marker -->
         <a-marker type="pattern" url="./star.patt">
             <a-cylinder id="interactiveCylinder" position="0 0.5 0" radius="0.5" height="1.5" color="#FFC65D" material="opacity: 0.5;">
-                <a-text id="cylinderText1" value="Welcome" align="center" color="#FFF" visible="false" position="0 0 0.55"
-                        geometry="primitive: plane; width: 2" material="color: #333"></a-text>
+                <a-text id="cylinderText1" value="Welcome" align="center" color="#FFF" visible="false"
+                        position="0 1.2 0" geometry="primitive: plane; width: 2" material="color: #333"></a-text>
             </a-cylinder>
         </a-marker>
 
@@ -62,7 +61,7 @@
 
                     // Get current scale and toggle it
                     var currentScale = box.getAttribute("scale") || { x: 1, y: 1, z: 1 };
-                    var newScale = currentScale.x === 1 ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
+                    var newScale = (currentScale.x == 1) ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
 
                     box.setAttribute("scale", newScale);
                 });
@@ -71,16 +70,14 @@
             }
         });
 
-
-
         document.addEventListener("DOMContentLoaded", function () {
             var cylinder = document.querySelector("#interactiveCylinder");
             var text = document.querySelector("#cylinderText1");
 
             if (cylinder && text) {
                 cylinder.addEventListener("click", function () {
-                    var isVisible = text.getAttribute("visible");
-                    text.setAttribute("visible", !isVisible);
+                    var isVisible = text.getAttribute("visible") === "true"; // Convert to boolean
+                    text.setAttribute("visible", !isVisible); // Toggle visibility
                 });
             } else {
                 console.error("Interactive cylinder or text not found.");
