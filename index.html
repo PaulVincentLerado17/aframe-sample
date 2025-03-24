@@ -34,34 +34,17 @@
         </a-box>
       </a-marker>
 
-        <!-- Interactable Box (Scales on Click) -->
-        <a-marker type="pattern" url="./car.patt">
-            <a-entity id="mouseCursor" cursor="rayOrigin: mouse" raycaster="objects: #resizableBox">
-                <a-box id="resizableBox" position="0 0.5 0" rotation="0 45 0" color="#4CC3D9" material="opacity: 0.5;"
-                       ></a-box>
-            </a-entity>
-        </a-marker>
 
-        <!-- Camera -->
-        <a-entity camera></a-entity>
+      <a-marker type="pattern" url="./car.patt">
+        <a-box position="0 0.5 0" material="opacity: 0.5;" color="#FFA500" rotation="0 90 0">
+          <a-animation attribute="rotation" to="90 360 0" dur="9000" repeat="indefinite" easing="linear"></a-animation>
+        </a-box>
+      </a-marker>
+
+
+      <!-- Single Camera -->
+      <a-entity camera></a-entity>
 
     </a-scene>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var box = document.querySelector("#resizableBox");
-
-            // Listen for clicks on the box
-            box.addEventListener("click", function (event) {
-                event.stopPropagation(); // Prevent event bubbling
-
-                // Get current scale and toggle it
-                var currentScale = box.getAttribute("scale") || { x: 0.5, y: 0.5, z: 0.5 };
-                var newScale = currentScale.x === 1 ? { x: 1, y: 1, z: 1 } : { x: 0.5, y: 0.5, z: 0.5 };
-
-                box.setAttribute("scale", newScale);
-            });
-        });
-    </script>
-</body>
+  </body>
 </html>
