@@ -9,7 +9,6 @@
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <!-- Latest AR.js -->
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.min.js"></script>
-
 </head>
 
 <body style="margin: 0px; overflow: hidden;">
@@ -17,30 +16,33 @@
       
         <!-- HIRO Marker -->
         <a-marker preset="hiro">
-            <a-box position="0 0.5 0" rotation="0 90 0" material="opacity: 0.5;" color="#4CC3D9"
-                   animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear">
+            <a-box position="0 0.5 0" material="opacity: 0.5;" color="#4CC3D9" rotation="0 90 0">
+                <a-animation attribute="rotation" to="90 360 0" dur="9000" repeat="indefinite" easing="linear"></a-animation>
             </a-box>
         </a-marker>
 
         <!-- Kanji Marker -->
         <a-marker preset="kanji">
-            <a-box position="0 0.5 0" rotation="0 90 0" material="opacity: 0.5;" color="#FF0000"
-                   animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear">
+            <a-box position="0 0.5 0" material="opacity: 0.5;" color="#FF0000" rotation="0 90 0">
+                <a-animation attribute="rotation" to="90 360 0" dur="9000" repeat="indefinite" easing="linear"></a-animation>
             </a-box>
         </a-marker>
 
         <!-- Custom Pattern Marker -->
         <a-marker type="pattern" url="./star.patt">
-            <a-box position="0 0.5 0" material="opacity: 0.5;" color="#00FF00"
-                   animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear">
-            </a-box>
+            <a-cylinder id="cylinder" position="3 0.75 -2" radius="0.5" height="1.5" color="#FFC65D">
+                <a-plane id="cylinderText2" rotation="0 -75 0" align="center" color="#FFF" visible="false" position="-0.7 -0.2 0" 
+                         geometry="primitive: plane; width: 2" material="color: #333"
+                         rotation="0 15 0">
+                  <a-text value="This is a cylinder" align="center"></a-text>
+                </a-plane>
+            </a-cylinder>
         </a-marker>
 
         <!-- Interactable Box (Scales on Click) -->
         <a-marker type="pattern" url="./car.patt">
             <a-entity id="mouseCursor" cursor="rayOrigin: mouse" raycaster="objects: #resizableBox">
-                <a-box id="resizableBox" position="0 0.5 0" rotation="0 45 0" color="#4CC3D9" material="opacity: 0.5;"
-                       animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear">
+                <a-box id="resizableBox" position="0 0.5 0" rotation="0 45 0" color="#4CC3D9" material="opacity: 0.5;">
                 </a-box>
             </a-entity>
         </a-marker>
@@ -52,22 +54,26 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            var cylinder = document.querySelector("#cylinder");
+            var text = document.querySelector("#cylinderText2");
+
+            cylinder.addEventListener("click", function () {
+                // Toggle visibility of the text plane
+                var isVisible = text.getAttribute("visible");
+                text.setAttribute("visible", !isVisible);
+            });
+
+            // Box click event for scaling
             var box = document.querySelector("#resizableBox");
+            box.addEventListener("click", function (event) {
+                event.stopPropagation(); // Prevent event bubbling
 
-            if (box) {
-                // Listen for clicks on the box
-                box.addEventListener("click", function (event) {
-                    event.stopPropagation(); // Prevent event bubbling
+                // Get current scale and toggle it
+                var currentScale = box.getAttribute("scale") || { x: 1, y: 1, z: 1 };
+                var newScale = currentScale.x === 1 ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
 
-                    // Get current scale and toggle it
-                    var currentScale = box.getAttribute("scale") || { x: 1, y: 1, z: 1 };
-                    var newScale = currentScale.x === 1 ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
-
-                    box.setAttribute("scale", newScale);
-                });
-            } else {
-                console.error("Resizable box not found. Ensure the marker is being detected.");
-            }
+                box.setAttribute("scale", newScale);
+            });
         });
     </script>
 </body>
