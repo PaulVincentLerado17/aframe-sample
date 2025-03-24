@@ -11,10 +11,14 @@
 
     <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
 
+
+
+
+
   </head>
   <body style="margin: 0px; overflow: hidden;">
     <a-scene embedded arjs="debugUIEnabled: false;" xr-mode-ui="enabled: false">
-      
+
       <!-- HIRO Marker -->
       <a-marker preset="hiro">
         <a-box position="0 0.5 0" material="opacity: 0.5;" color="#4CC3D9" rotation="0 90 0">
@@ -28,6 +32,7 @@
         </a-box>
       </a-marker>
 
+
       <!-- Custom Pattern Marker -->
       <a-marker type="pattern" url="./star.patt">
         <a-box position="0 0.5 0" material="opacity: 0.5;">
@@ -36,19 +41,38 @@
       </a-marker>
 
 
+
+
+
+
+
+
+
+
       <a-marker type="pattern" url="./car.patt">
         <a-entity id="mouseCursor" cursor="rayOrigin: mouse">
-          <a-box id="resizableBox" position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"
+          <a-box id="resizableBox" position="-1 0.5 -3" rotation="0 90 0" color="#4CC3D9"
        event-set__enter="_event: mouseenter; color: #8FF7FF"
-       event-set__leave="_event: mouseleave; color: #4CC3D9"></a-box>
+       event-set__leave="_event: mouseleave; color: #4CC3D9"
+       >
+    
+       <a-animation attribute="rotation" to="90 360 0" dur="9000" repeat="indefinite" easing="linear"></a-animation>
+    </a-box>
        </a-entity>
       </a-marker>
+
 
 
       <!-- Single Camera -->
       <a-entity camera></a-entity>
 
+
     </a-scene>
+
+
+
+
+
 
 
     <script>
@@ -60,8 +84,8 @@
           event.stopPropagation(); // Prevent event bubbling
           
           // Toggle between original and enlarged size
-          var currentScale = box.getAttribute("scale") || { x: 1, y: 1, z: 1 };
-          var newScale = (currentScale.x === 1) ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
+          var currentScale = box.getAttribute("scale") || { x: 0.5, y: 0.5, z: 0.5 };
+          var newScale = (currentScale.x === 1) ? { x: 1, y: 1, z: 1 } : { x: 0.5, y: 0.5, z: 0.5 };
           
           box.setAttribute("scale", newScale);
         });
