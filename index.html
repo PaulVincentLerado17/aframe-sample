@@ -37,11 +37,22 @@
 
         <!-- Interactable Box (Scales on Click) -->
         <a-marker type="pattern" url="./car.patt">
-            <a-entity id="mouseCursor" cursor="rayOrigin: mouse" raycaster="objects: #resizableBox">
-                <a-box id="resizableBox" position="0 0.5 0" rotation="0 45 0" color="#4CC3D9" material="opacity: 0.5;">
-                    <a-animation attribute="rotation" to="90 360 0" dur="9000" repeat="indefinite" easing="linear"></a-animation>
-                       </a-box>
+            <a-entity id="mouseCursor" cursor="rayOrigin: mouse" 
+                      raycaster="objects: #resizableBox, #clickPlane; interval: 100; showLine: false;">
             </a-entity>
+
+            <a-box id="resizableBox" position="0 0.5 0" rotation="0 45 0" 
+                   color="#4CC3D9" material="opacity: 0.5;">
+                <a-animation attribute="rotation" to="90 360 0" 
+                             dur="9000" repeat="indefinite" easing="linear">
+                </a-animation>
+            </a-box>
+
+            <!-- Transparent Plane to Improve Click Detection -->
+            <a-plane id="clickPlane" position="0 0.5 0" width="2" height="2"
+                     material="opacity: 0; transparent: true;">
+            </a-plane>
+
         </a-marker>
 
         <!-- Camera -->
@@ -52,17 +63,17 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var box = document.querySelector("#resizableBox");
+            var plane = document.querySelector("#clickPlane");
 
-            // Listen for clicks on the box
-            box.addEventListener("click", function (event) {
-                event.stopPropagation(); // Prevent event bubbling
-
-                // Get current scale and toggle it
+            function toggleScale() {
                 var currentScale = box.getAttribute("scale") || { x: 1, y: 1, z: 1 };
                 var newScale = currentScale.x === 1 ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
-
                 box.setAttribute("scale", newScale);
-            });
+            }
+
+            // Listen for clicks on the box and the transparent plane
+            box.addEventListener("click", toggleScale);
+            plane.addEventListener("click", toggleScale);
         });
     </script>
 </body>
