@@ -17,22 +17,22 @@
       
         <!-- HIRO Marker -->
         <a-marker preset="hiro">
-            <a-box position="0 0.5 0" material="opacity: 0.5;" color="#4CC3D9" rotation="0 90 0">
-                <a-animation attribute="rotation" to="90 360 0" dur="9000" repeat="indefinite" easing="linear"></a-animation>
+            <a-box position="0 0.5 0" rotation="0 90 0" material="opacity: 0.5;" color="#4CC3D9"
+                   animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear">
             </a-box>
         </a-marker>
 
         <!-- Kanji Marker -->
         <a-marker preset="kanji">
-            <a-box position="0 0.5 0" material="opacity: 0.5;" color="#FF0000" rotation="0 90 0">
-                <a-animation attribute="rotation" to="90 360 0" dur="9000" repeat="indefinite" easing="linear"></a-animation>
+            <a-box position="0 0.5 0" rotation="0 90 0" material="opacity: 0.5;" color="#FF0000"
+                   animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear">
             </a-box>
         </a-marker>
 
         <!-- Custom Pattern Marker -->
         <a-marker type="pattern" url="./star.patt">
-            <a-box position="0 0.5 0" material="opacity: 0.5;">
-                <a-animation attribute="rotation" to="90 360 0" dur="9000" repeat="indefinite" easing="linear"></a-animation>
+            <a-box position="0 0.5 0" material="opacity: 0.5;" color="#00FF00"
+                   animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear">
             </a-box>
         </a-marker>
 
@@ -40,7 +40,8 @@
         <a-marker type="pattern" url="./car.patt">
             <a-entity id="mouseCursor" cursor="rayOrigin: mouse" raycaster="objects: #resizableBox">
                 <a-box id="resizableBox" position="0 0.5 0" rotation="0 45 0" color="#4CC3D9" material="opacity: 0.5;"
-                       ></a-box>
+                       animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear">
+                </a-box>
             </a-entity>
         </a-marker>
 
@@ -53,16 +54,20 @@
         document.addEventListener("DOMContentLoaded", function () {
             var box = document.querySelector("#resizableBox");
 
-            // Listen for clicks on the box
-            box.addEventListener("click", function (event) {
-                event.stopPropagation(); // Prevent event bubbling
+            if (box) {
+                // Listen for clicks on the box
+                box.addEventListener("click", function (event) {
+                    event.stopPropagation(); // Prevent event bubbling
 
-                // Get current scale and toggle it
-                var currentScale = box.getAttribute("scale") || { x: 1, y: 1, z: 1 };
-                var newScale = currentScale.x === 1 ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
+                    // Get current scale and toggle it
+                    var currentScale = box.getAttribute("scale") || { x: 1, y: 1, z: 1 };
+                    var newScale = currentScale.x === 1 ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
 
-                box.setAttribute("scale", newScale);
-            });
+                    box.setAttribute("scale", newScale);
+                });
+            } else {
+                console.error("Resizable box not found. Ensure the marker is being detected.");
+            }
         });
     </script>
 </body>
