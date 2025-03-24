@@ -29,8 +29,18 @@
 
       <!-- Custom Pattern Marker -->
       <a-marker type="pattern" url="./star.patt">
-        <a-box position="0 0.5 0" material="opacity: 1;"></a-box>
+        <a-box position="0 0.5 0" material="opacity: 1;">
+          <a-animation attribute="rotation" to="90 360 0" dur="9000" repeat="indefinite" easing="linear"></a-animation>
+        </a-box>
       </a-marker>
+
+
+      <a-marker type="pattern" url="./square.patt">
+        <a-box position="0 0.5 0" material="opacity: 1;" color="#FFA500" rotation="0 90 0">
+          <a-animation attribute="rotation" to="90 360 0" dur="9000" repeat="indefinite" easing="linear"></a-animation>
+        </a-box>
+      </a-marker>
+
 
       <!-- Single Camera -->
       <a-entity camera></a-entity>
