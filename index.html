@@ -49,12 +49,13 @@
         function changeColor(event) {
           const colors = ["#4CC3D9", "#FF0000", "#00FF00", "#FFFF00", "#FFA500", "#800080"];
           const randomColor = colors[Math.floor(Math.random() * colors.length)];
-          event.target.setAttribute("color", randomColor);
+          event.target.setAttribute("material", "color", randomColor);
         }
 
         const boxes = document.querySelectorAll("a-box");
         boxes.forEach(box => {
-          box.addEventListener("click", changeColor);
+          box.addEventListener("mousedown", changeColor); // Works on both desktop and mobile
+          box.addEventListener("touchstart", changeColor); // Ensures it works on mobile
         });
       });
     </script>
