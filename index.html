@@ -57,8 +57,8 @@
                 event.stopPropagation(); // Prevent event bubbling
 
                 // Get current scale and toggle it
-                var currentScale = box.getAttribute("scale") || { x: 0.5, y: 0.5, z: 0.5 };
-                var newScale = currentScale.x === 1 ? { x: 1, y: 1, z: 1 } : { x: 0.5, y: 0.5, z: 0.5 };
+                var currentScale = box.getAttribute("scale") || { x: 1, y: 1, z: 1 };
+                var newScale = currentScale.x === 1 ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
 
                 box.setAttribute("scale", newScale);
             });
