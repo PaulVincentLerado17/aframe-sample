@@ -71,11 +71,11 @@
 
             // Functionality for the interactive cylinder (tapping to show text)
             var cylinder = document.querySelector("#interactiveCylinder");
-            var text = document.querySelector("#cylinderText1");
+            
 
-            if (cylinder && text) {
+            if (cylinder) {
                 // Listen for touch events (mobile) and click events (desktop)
-                cylinder.addEventListener("touchstart", function (event) {
+                cylinder.addEventListener("click", function (event) {
                     event.stopPropagation();
                     toggleText();
                 });
@@ -90,7 +90,7 @@
                     text.setAttribute("visible", isVisible ? "false" : "true");
                 }
             } else {
-                console.error("Cylinder or text not found.");
+                console.error("text not found.");
             }
         });
     </script>
