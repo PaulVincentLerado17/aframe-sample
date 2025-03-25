@@ -87,25 +87,29 @@ var cylinder = document.querySelector("#interactiveCylinder");
         // Ensure the cylinder is clickable
         cylinder.setAttribute("class", "clickable");
 
+        // Start with the text hidden
+        text.setAttribute("scale", "0 0 0");
+
         // Toggle text visibility on click
         cylinder.addEventListener("click", function (event) {
             event.stopPropagation(); // Prevent event bubbling
 
-            // Get current visibility state
-            var isVisible = text.getAttribute("visible") === "true";
+            // Get current scale
+            var currentScale = text.getAttribute("scale");
 
-            // Force update visibility
-            text.setAttribute("visible", !isVisible ? "true" : "false");
+            // Toggle visibility using scale (0 0 0 to hide, 1 1 1 to show)
+            if (currentScale.x == 0) {
+                text.setAttribute("scale", "1 1 1"); // Show text
+            } else {
+                text.setAttribute("scale", "0 0 0"); // Hide text
+            }
 
-            // Debugging log
-            console.log("Text visibility changed to:", !isVisible);
-
-            // Force re-render by toggling a different property
-            text.setAttribute("opacity", !isVisible ? "1" : "0");
+            console.log("Text scale changed to:", text.getAttribute("scale"));
         });
     } else {
         console.error("Cylinder or text not found.");
     }
+
 
 
 
