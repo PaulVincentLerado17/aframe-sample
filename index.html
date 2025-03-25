@@ -5,86 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AR Box</title>
 
+    <!-- Latest A-Frame -->
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <!-- Latest AR.js -->
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.min.js"></script>
 </head>
 
 <body style="margin: 0px; overflow: hidden;">
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-
-        <a-marker preset="hiro">
-            <a-box position="0 0.5 0" rotation="0 90 0" material="opacity: 0.5;" color="#4CC3D9"
-                   animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear">
-            </a-box>
-        </a-marker>
-
-        <a-marker preset="kanji">
-            <a-box position="0 0.5 0" rotation="0 90 0" material="opacity: 0.5;" color="#FF0000"
-                   animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear">
-            </a-box>
-        </a-marker>
-
+        
+        <!-- Custom Pattern Marker (Cylinder) -->
         <a-marker type="pattern" url="./star.patt">
-            <a-cylinder id="interactiveCylinder" position="0 0.5 0" radius="0.5" height="1.5" color="#008000" material="opacity: 0.5;">
-                <a-text id="cylinderText1" value="Welcome" align="center" color="#FFFFFF" visible="false"
-                        position="0 2 0" geometry="primitive: plane; width: 2" material="color: #808080; opacity: 0.5;">
+            <a-cylinder id="interactiveCylinder" class="clickable" position="0 0.5 0" radius="0.5" height="1.5" color="#008000" material="opacity: 0.5;">
+                <a-text id="cylinderText1" value="Welcome" align="center" color="#FFFFFF" visible="false" 
+                    position="0 0 0.8" geometry="primitive: plane; width: 2" material="color: #808080; opacity: 0.5;">
                 </a-text>
             </a-cylinder>
         </a-marker>
 
-        <a-marker type="pattern" url="./car.patt">
-            <a-entity id="mouseCursor" cursor="rayOrigin: mouse" raycaster="objects: #resizableBox">
-                <a-box id="resizableBox" position="0 0.5 0" rotation="0 45 0" color="#4CC3D9" material="opacity: 0.5;"
-                       animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear">
-                </a-box>
-            </a-entity>
-        </a-marker>
-
+        <!-- Camera -->
         <a-entity camera></a-entity>
         <a-entity cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
-
     </a-scene>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Functionality for the resizable box
-            var box = document.querySelector("#resizableBox");
-
-            if (box) {
-                box.addEventListener("click", function (event) {
-                    event.stopPropagation(); // Prevent event bubbling
-
-                    // Get current scale and toggle it
-                    var currentScale = box.getAttribute("scale") || { x: 1, y: 1, z: 1 };
-                    var newScale = currentScale.x === 1 ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
-
-                    box.setAttribute("scale", newScale);
-                });
-            } else {
-                console.error("Resizable box not found. Ensure the marker is being detected.");
-            }
-
-            // Functionality for the interactive cylinder (tapping to show/hide text)
             var cylinder = document.querySelector("#interactiveCylinder");
             var text = document.querySelector("#cylinderText1");
-
-            if (cylinder && text) {
-                function toggleTextVisibility() {
-                    text.setAttribute("visible", !text.getAttribute("visible"));
-                }
-
-                cylinder.addEventListener("click", function (event) {
-                    event.stopPropagation(); // Prevent event bubbling
-                    toggleTextVisibility();
-                });
-
-                text.addEventListener("click", function (event) {
-                    event.stopPropagation(); // Prevent event bubbling
-                    toggleTextVisibility();
-                });
-            } else {
-                console.error("Cylinder or text element not found. Ensure the marker is being detected.");
-            }
+            
+            cylinder.addEventListener("click", function () {
+                var isVisible = text.getAttribute("visible");
+                text.setAttribute("visible", !isVisible);
+            });
         });
     </script>
 </body>
