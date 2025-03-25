@@ -47,6 +47,8 @@
 
         <!-- Camera -->
         <a-entity camera></a-entity>
+        <a-entity cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
+
 
     </a-scene>
 
@@ -70,28 +72,27 @@
             }
 
             // Functionality for the interactive cylinder (tapping to show text)
+           
             var cylinder = document.querySelector("#interactiveCylinder");
-            
+        var text = document.querySelector("#cylinderText1");
 
-            if (cylinder) {
-                // Listen for touch events (mobile) and click events (desktop)
-                cylinder.addEventListener("click", function (event) {
-                    event.stopPropagation();
-                    toggleText();
-                });
+        if (cylinder && text) {
+            console.log("Cylinder and text found, adding event listener.");
 
-                cylinder.addEventListener("click", function (event) {
-                    event.stopPropagation();
-                    toggleText();
-                });
+            // Enable click detection by adding an event listener
+            cylinder.setAttribute("class", "clickable"); // Ensure it can be targeted by raycaster
+            cylinder.setAttribute("event-set__click", "_event: click; _target: #cylinderText1; visible: true");
 
-                function toggleText() {
-                    var isVisible = text.getAttribute("visible") === "true";
-                    text.setAttribute("visible", isVisible ? "false" : "true");
-                }
-            } else {
-                console.error("text not found.");
-            }
+            cylinder.addEventListener("click", function (event) {
+                event.stopPropagation();
+
+                var isVisible = text.getAttribute("visible") === "true";
+                text.setAttribute("visible", !isVisible);
+                console.log("Text visibility toggled:", !isVisible); // Debugging log
+            });
+        } else {
+            console.error("Cylinder or text not found.");
+        }
         });
     </script>
 </body>
