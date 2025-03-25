@@ -30,7 +30,7 @@
 
         <!-- Custom Pattern Marker (Cylinder) -->
         <a-marker type="pattern" url="./star.patt">
-            <a-cylinder id="interactiveCylinder" position="0 0.5 0" radius="0.5" height="1.5" color="#008000" material="opacity: 0.4;">
+            <a-cylinder id="interactiveCylinder" position="0 0.5 0" radius="0.5" height="1.5" color="#008000" material="opacity: 0.8;">
                 <a-text id="cylinderText1" value="Welcome" align="center" color="#FFFFFF" visible="false" position="0 0 0.55"
                     geometry="primitive: plane; width: 2" material="color: #808080"></a-text>
             </a-cylinder>
@@ -74,7 +74,7 @@
             // Functionality for the interactive cylinder (tapping to show text)
 
 
-               var cylinder = document.querySelector("#interactiveCylinder");
+           var cylinder = document.querySelector("#interactiveCylinder");
         var text = document.querySelector("#cylinderText1");
 
         if (cylinder && text) {
