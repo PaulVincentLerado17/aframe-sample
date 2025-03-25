@@ -72,27 +72,33 @@
             }
 
             // Functionality for the interactive cylinder (tapping to show text)
-           
-            var cylinder = document.querySelector("#interactiveCylinder");
+
+
+               var cylinder = document.querySelector("#interactiveCylinder");
         var text = document.querySelector("#cylinderText1");
 
         if (cylinder && text) {
             console.log("Cylinder and text found, adding event listener.");
 
-            // Enable click detection by adding an event listener
-            cylinder.setAttribute("class", "clickable"); // Ensure it can be targeted by raycaster
-            cylinder.setAttribute("event-set__click", "_event: click; _target: #cylinderText1; visible: true");
+            // Make sure the cylinder is clickable
+            cylinder.setAttribute("class", "clickable");
 
+            // Toggle text visibility on click
             cylinder.addEventListener("click", function (event) {
                 event.stopPropagation();
-
+                
                 var isVisible = text.getAttribute("visible") === "true";
-                text.setAttribute("visible", !isVisible);
-                console.log("Text visibility toggled:", !isVisible); // Debugging log
+                text.setAttribute("visible", isVisible ? "false" : "true");
+                
+                console.log("Text visibility toggled:", !isVisible);
             });
         } else {
             console.error("Cylinder or text not found.");
         }
+
+
+
+            
         });
     </script>
 </body>
