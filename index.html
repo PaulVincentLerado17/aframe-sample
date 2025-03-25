@@ -98,15 +98,21 @@ var cylinder = document.querySelector("#interactiveCylinder");
             // Get current visibility state
             var isVisible = text.getAttribute("visible") === "true";
 
-            // Toggle visibility and opacity
-            text.setAttribute("visible", isVisible ? "false" : "true");
-            text.setAttribute("material", `opacity: ${isVisible ? 0 : 1}`);
+            // Toggle visibility properly
+            if (isVisible) {
+                text.setAttribute("visible", "false");
+                text.setAttribute("material", "opacity: 0; transparent: true;");
+            } else {
+                text.setAttribute("visible", "true");
+                text.setAttribute("material", "opacity: 1; transparent: false;");
+            }
 
             console.log("Text visibility changed to:", !isVisible);
         });
     } else {
         console.error("Cylinder or text not found.");
     }
+
 
 
 
