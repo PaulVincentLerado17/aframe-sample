@@ -31,17 +31,10 @@
 
         <!-- Custom Pattern Marker -->
         <a-marker type="pattern" url="./star.patt">
-            <a-entity>
-                <!-- Clickable Cylinder -->
-                <a-cylinder id="clickableCylinder" position="0 0.75 0" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-
-                <!-- Text Plane (Initially Hidden) -->
-                <a-plane id="cylinderText" position="0 1.5 0" rotation="-90 0 0"
-                         geometry="primitive: plane; width: 2; height: 1"
-                         material="color: #FFF; opacity: 0.8" visible="false">
-                    <a-text value="This is a cylinder" align="center" position="0 0 0.1" color="#000"></a-text>
-                </a-plane>
-            </a-entity>
+            <a-cylinder id="interactiveCylinder" position="0 0.5 0" radius="0.5" height="1.5" color="#FFC65D" material="opacity: 0.5;">
+                <a-text id="cylinderText1" value="Welcome" align="center" color="#FFF" visible="false" position="0 0 0.55"
+                        geometry="primitive: plane; width: 2" material="color: #333"></a-text>
+            </a-cylinder>
         </a-marker>
 
         <!-- Interactable Box (Scales on Click) -->
@@ -60,40 +53,39 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-    // Resizable Box Click Event
-    var box = document.querySelector("#resizableBox");
-    var cylinder = document.querySelector("#clickableCylinder");
-    var cylinderText = document.querySelector("#cylinderText");
+            var box = document.querySelector("#resizableBox");
 
-    if (box) {
-        box.addEventListener("click", function (event) {
-            event.stopPropagation(); // Prevent event bubbling
+            if (box) {
+                // Listen for clicks on the box
+                box.addEventListener("click", function (event) {
+                    event.stopPropagation(); // Prevent event bubbling
 
-            // Parse current scale
-            var currentScale = box.getAttribute("scale") ? box.getAttribute("scale").split(" ").map(parseFloat) : [1, 1, 1];
-            var newScale = currentScale[0] === 1 ? "2 2 2" : "1 1 1";
+                    // Get current scale and toggle it
+                    var currentScale = box.getAttribute("scale") || { x: 1, y: 1, z: 1 };
+                    var newScale = currentScale.x === 1 ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
 
-            box.setAttribute("scale", newScale);
+                    box.setAttribute("scale", newScale);
+                });
+            } else {
+                console.error("Resizable box not found. Ensure the marker is being detected.");
+            }
         });
-    } else {
-        console.error("Resizable box not found.");
-    }
-
-    // Cylinder Click Event
-    if (cylinder && cylinderText) {
-        cylinder.addEventListener("click", function () {
-            var isVisible = cylinderText.getAttribute("visible") === "true";
-            cylinderText.setAttribute("visible", !isVisible);
-        });
-    } else {
-        console.error("Cylinder or text not found.");
-    }
-});
-
 
 
 
         
+            var cylinder = document.querySelector("#interactiveCylinder");
+            var text = document.querySelector("#cylinderText1");
+
+            if (cylinder && text) {
+                cylinder.addEventListener("click", function () {
+                    var isVisible = text.getAttribute("visible");
+                    text.setAttribute("visible", !isVisible);
+                });
+            } else {
+                console.error("Interactive cylinder or text not found.");
+            }
+       
     </script>
 </body>
 </html>
