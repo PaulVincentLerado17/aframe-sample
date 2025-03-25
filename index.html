@@ -67,12 +67,10 @@
             // Functionality for the interactive cylinder (tapping to show/hide text)
             var cylinder = document.querySelector("#interactiveCylinder");
             var text = document.querySelector("#cylinderText1");
-            var isTextVisible = false;
 
             if (cylinder && text) {
                 function toggleTextVisibility() {
-                    isTextVisible = !isTextVisible;
-                    text.setAttribute("visible", isTextVisible);
+                    text.setAttribute("visible", !text.getAttribute("visible"));
                 }
 
                 cylinder.addEventListener("click", function (event) {
