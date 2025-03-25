@@ -79,13 +79,16 @@
         var text = document.querySelector("#cylinderText1");
 
         if (cylinder && text) {
-            cylinder.addEventListener("click", function () {
-                var isVisible = text.getAttribute("visible");
-                text.setAttribute("visible", !isVisible);
+            cylinder.addEventListener("click", function (event) {
+                event.stopPropagation(); // Prevent event bubbling
+                var isVisible = text.getAttribute("visible") === "true"; // Ensure it's a boolean
+                text.setAttribute("visible", isVisible ? "false" : "true"); // Toggle visibility
             });
         } else {
             console.error("Cylinder or text not found.");
         }
+
+
 
             
        
