@@ -78,7 +78,7 @@
             // Functionality for the interactive cylinder (tapping to show text)
 
 
-            var cylinder = document.querySelector("#interactiveCylinder");
+var cylinder = document.querySelector("#interactiveCylinder");
     var text = document.querySelector("#cylinderText1");
 
     if (cylinder && text) {
@@ -87,6 +87,10 @@
         // Ensure the cylinder is clickable
         cylinder.setAttribute("class", "clickable");
 
+        // Start with the text hidden
+        text.setAttribute("visible", "false");
+        text.setAttribute("material", "opacity: 0");
+
         // Toggle text visibility on click
         cylinder.addEventListener("click", function (event) {
             event.stopPropagation(); // Prevent event bubbling
@@ -94,20 +98,16 @@
             // Get current visibility state
             var isVisible = text.getAttribute("visible") === "true";
 
-            // Explicitly set visibility
-            if (isVisible) {
-                text.setAttribute("visible", "false");
-                text.setAttribute("opacity", "0"); // Ensuring full disappearance
-            } else {
-                text.setAttribute("visible", "true");
-                text.setAttribute("opacity", "1"); // Making it fully visible
-            }
+            // Toggle visibility and opacity
+            text.setAttribute("visible", isVisible ? "false" : "true");
+            text.setAttribute("material", `opacity: ${isVisible ? 0 : 1}`);
 
-            console.log("Text visibility changed:", !isVisible);
+            console.log("Text visibility changed to:", !isVisible);
         });
     } else {
         console.error("Cylinder or text not found.");
     }
+
 
 
 
