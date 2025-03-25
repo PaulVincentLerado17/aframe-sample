@@ -78,8 +78,9 @@
             // Functionality for the interactive cylinder (tapping to show text)
 
 
-            var cylinder = document.querySelector("#interactiveCylinder");
+var cylinder = document.querySelector("#interactiveCylinder");
     var text = document.querySelector("#cylinderText1");
+    var isToggling = false; // Flag to prevent rapid toggling
 
     if (cylinder && text) {
         console.log("Cylinder and text found, adding event listener.");
@@ -91,23 +92,26 @@
         cylinder.addEventListener("click", function (event) {
             event.stopPropagation(); // Prevent event bubbling
 
+            if (isToggling) return; // Prevent multiple rapid clicks
+            isToggling = true;
+
             // Get current visibility state
             var isVisible = text.getAttribute("visible") === "true";
 
-            // Explicitly set visibility
-            if (isVisible) {
-                text.setAttribute("visible", "false");
-                text.setAttribute("opacity", "0"); // Ensuring full disappearance
-            } else {
-                text.setAttribute("visible", "true");
-                text.setAttribute("opacity", "1"); // Making it fully visible
-            }
+            // Toggle visibility
+            text.setAttribute("visible", isVisible ? "false" : "true");
 
             console.log("Text visibility changed:", !isVisible);
+
+            // Reset the toggle flag after a short delay
+            setTimeout(() => {
+                isToggling = false;
+            }, 300); // 300ms delay
         });
     } else {
         console.error("Cylinder or text not found.");
     }
+
 
 
 
