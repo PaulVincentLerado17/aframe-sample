@@ -76,18 +76,18 @@
 
 
         
-            // var cylinder = document.querySelector("#interactiveCylinder");
-            // var text = document.querySelector("#cylinderText1");
+            var cylinder = document.querySelector("#interactiveCylinder");
+            var text = document.querySelector("#cylinderText1");
 
-            // if (cylinder && text) {
-            //     cylinder.addEventListener("click", function () {
-            //         var isVisible = text.getAttribute("visible");
-            //         text.setAttribute("visible", !isVisible);
-            //     });
-            // } else {
-            //     console.error("Interactive cylinder or text not found.");
-            // }
-            //
+            if (cylinder && text) {
+                cylinder.addEventListener("click", function () {
+                    var isVisible = text.getAttribute("visible");
+                    text.setAttribute("visible", !isVisible);
+                });
+            } else {
+                console.error("Interactive cylinder or text not found.");
+            }
+            
        
     </script>
 </body>
