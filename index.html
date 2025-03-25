@@ -32,8 +32,8 @@
         <!-- Custom Pattern Marker (Cylinder) -->
         <a-marker type="pattern" url="./star.patt">
             <a-cylinder id="interactiveCylinder" position="0 0.5 0" radius="0.5" height="1.5" color="#008000" material="opacity: 0.5;">
-                <a-text id="cylinderText1" value="Welcome" align="center" color="#808080" visible="false" 
-        position="0 0 0.8" geometry="primitive: plane; width: 2" material="color: #FFFFFF.; opacity: 1;">
+                <a-text id="cylinderText1" value="Welcome" align="center" color="#FFFFFF" visible="false" 
+        position="0 0 0.8" geometry="primitive: plane; width: 2" material="color: #808080; opacity: 0.5;">
 </a-text>
 
             </a-cylinder>
@@ -78,7 +78,7 @@
             // Functionality for the interactive cylinder (tapping to show text)
 
 
-var cylinder = document.querySelector("#interactiveCylinder");
+            var cylinder = document.querySelector("#interactiveCylinder");
     var text = document.querySelector("#cylinderText1");
 
     if (cylinder && text) {
@@ -87,31 +87,36 @@ var cylinder = document.querySelector("#interactiveCylinder");
         // Ensure the cylinder is clickable
         cylinder.setAttribute("class", "clickable");
 
-        // Start with the text hidden
-        text.setAttribute("scale", "0 0 0");
-
         // Toggle text visibility on click
         cylinder.addEventListener("click", function (event) {
             event.stopPropagation(); // Prevent event bubbling
 
-            // Get current scale
-            var currentScale = text.getAttribute("scale");
+            // Get current visibility state
+            var isVisible = text.getAttribute("visible") === "true";
 
-            // Toggle visibility using scale (0 0 0 to hide, 1 1 1 to show)
-            if (currentScale.x == 0) {
-                text.setAttribute("scale", "1 1 1"); // Show text
+            // Explicitly set visibility
+            if (isVisible) {
+                text.setAttribute("visible", "false");
+                text.setAttribute("opacity", "0"); // Ensuring full disappearance
             } else {
-                text.setAttribute("scale", "0 0 0"); // Hide text
+                text.setAttribute("visible", "true");
+                text.setAttribute("opacity", "1"); // Making it fully visible
             }
 
-            console.log("Text scale changed to:", text.getAttribute("scale"));
+            console.log("Text visibility changed:", !isVisible);
         });
     } else {
         console.error("Cylinder or text not found.");
     }
 
 
-            
+
+
+
+
+
+
+
             
         });
     </script>
