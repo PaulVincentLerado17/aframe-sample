@@ -48,6 +48,15 @@
             </a-cylinder>
         </a-marker>
 
+
+        <a-marker type="pattern" url="./car.patt">
+            <a-entity id="mouseCursor" cursor="rayOrigin: mouse" raycaster="objects: #resizableBox">
+                <a-box id="resizableBox" position="0 0.5 0" rotation="0 45 0" color="#4CC3D9" material="opacity: 0.5;"
+                       animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear">
+                </a-box>
+            </a-entity>
+        </a-marker>
+
         <!-- Camera -->
         <a-entity camera></a-entity>
         <a-entity cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
@@ -77,10 +86,11 @@
 
             // Functionality for the interactive cylinder (tapping to show text)
 
+            
+        });
 
-        
 
-
+        document.addEventListener("DOMContentLoaded", function () {
             var cylinder = document.querySelector("#interactiveCylinder");
             var text = document.querySelector("#cylinderText1");
             
@@ -98,13 +108,6 @@
                     text.setAttribute("visible", false);
                 }
             });
-
-
-
-
-
-
-            
         });
 
 
