@@ -32,8 +32,8 @@
         <!-- Custom Pattern Marker (Cylinder) -->
         <a-marker type="pattern" url="./star.patt">
             <a-cylinder id="interactiveCylinder" position="0 0.5 0" radius="0.5" height="1.5" color="#008000" material="opacity: 0.5;">
-                <a-text id="cylinderText1" value="Welcome" align="center" color="#FFFFFF" visible="false" 
-        position="0 0 0.8" geometry="primitive: plane; width: 2" material="color: #808080; opacity: 0.5;">
+                <a-text id="cylinderText1" value="Welcome" align="center" color="#808080" visible="false" 
+        position="0 0 0.8" geometry="primitive: plane; width: 2" material="color: #FFFFFF.; opacity: 1;">
 </a-text>
 
             </a-cylinder>
@@ -84,7 +84,7 @@
     if (cylinder && text) {
         console.log("Cylinder and text found, adding event listener.");
 
-        // Ensure the cylinder is recognized as clickable
+        // Ensure the cylinder is clickable
         cylinder.setAttribute("class", "clickable");
 
         // Toggle text visibility on click
@@ -94,14 +94,21 @@
             // Get current visibility state
             var isVisible = text.getAttribute("visible") === "true";
 
-            // Toggle visibility
-            text.setAttribute("visible", isVisible ? "false" : "true");
+            // Explicitly set visibility
+            if (isVisible) {
+                text.setAttribute("visible", "false");
+                text.setAttribute("opacity", "0"); // Ensuring full disappearance
+            } else {
+                text.setAttribute("visible", "true");
+                text.setAttribute("opacity", "1"); // Making it fully visible
+            }
 
             console.log("Text visibility changed:", !isVisible);
         });
     } else {
         console.error("Cylinder or text not found.");
     }
+
 
 
 
