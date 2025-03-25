@@ -87,28 +87,29 @@
         // Ensure the cylinder is clickable
         cylinder.setAttribute("class", "clickable");
 
-        // Start with the text hidden (move it far away)
-        text.setAttribute("position", "0 100 0");
+        // Start with the text very small (hidden)
+        text.setAttribute("scale", "0.01 0.01 0.01");
 
-        // Toggle text visibility on click
+        // Toggle text size on click
         cylinder.addEventListener("click", function (event) {
             event.stopPropagation(); // Prevent event bubbling
 
-            // Get current position
-            var currentPosition = text.getAttribute("position");
+            // Get current scale
+            var currentScale = text.getAttribute("scale");
 
-            // Toggle visibility using position (move it far away to hide)
-            if (currentPosition.y === 100) {
-                text.setAttribute("position", "0 0 0.8"); // Bring it back to original position
+            // Toggle between small (hidden) and normal size
+            if (currentScale.x < 0.1) {
+                text.setAttribute("scale", "1 1 1"); // Show text
             } else {
-                text.setAttribute("position", "0 100 0"); // Move it far away
+                text.setAttribute("scale", "0.01 0.01 0.01"); // Make text very small
             }
 
-            console.log("Text position changed to:", text.getAttribute("position"));
+            console.log("Text scale changed to:", text.getAttribute("scale"));
         });
     } else {
         console.error("Cylinder or text not found.");
     }
+
 
 
 
