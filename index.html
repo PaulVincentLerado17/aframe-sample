@@ -33,9 +33,19 @@
             var cylinder = document.querySelector("#interactiveCylinder");
             var text = document.querySelector("#cylinderText1");
             
-            cylinder.addEventListener("click", function () {
+            function toggleText() {
                 var isVisible = text.getAttribute("visible");
                 text.setAttribute("visible", !isVisible);
+            }
+
+            cylinder.addEventListener("click", function () {
+                toggleText();
+            });
+
+            text.addEventListener("click", function () {
+                if (text.getAttribute("visible")) {
+                    text.setAttribute("visible", false);
+                }
             });
         });
     </script>
