@@ -31,12 +31,17 @@
 
         <!-- Custom Pattern Marker -->
         <a-marker type="pattern" url="./star.patt">
-            <a-cylinder id="clickableCylinder" position="3 0.75 -2" radius="0.5" height="1.5" color="#FFC65D">
-                <a-plane id="cylinderText2" rotation="0 -75 0" align="center" color="#FFF" visible="false" position="-0.7 -0.2 0"
-                    geometry="primitive: plane; width: 2" material="color: #333">
-                    <a-text value="This is a cylinder" align="center"></a-text>
+            <a-entity>
+                <!-- Clickable Cylinder -->
+                <a-cylinder id="clickableCylinder" position="0 0.75 0" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+
+                <!-- Text Plane (Initially Hidden) -->
+                <a-plane id="cylinderText" position="0 1.5 0" rotation="-90 0 0"
+                         geometry="primitive: plane; width: 2; height: 1"
+                         material="color: #FFF; opacity: 0.8" visible="false">
+                    <a-text value="This is a cylinder" align="center" position="0 0 0.1" color="#000"></a-text>
                 </a-plane>
-            </a-cylinder>
+            </a-entity>
         </a-marker>
 
         <!-- Interactable Box (Scales on Click) -->
@@ -77,19 +82,18 @@
 
 
         document.addEventListener("DOMContentLoaded", function () {
-        var cylinder = document.querySelector("#clickableCylinder");
-        var cylinderText = document.querySelector("#cylinderText2");
+            var cylinder = document.querySelector("#clickableCylinder");
+            var cylinderText = document.querySelector("#cylinderText");
 
-        if (cylinder && cylinderText) {
-            cylinder.addEventListener("click", function () {
-                // Convert visibility attribute to a boolean
-                var isVisible = cylinderText.getAttribute("visible") === "true";
-                cylinderText.setAttribute("visible", !isVisible);
-            });
-        } else {
-            console.error("Cylinder or text not found.");
-        }
-    });
+            if (cylinder && cylinderText) {
+                cylinder.addEventListener("click", function () {
+                    var isVisible = cylinderText.getAttribute("visible") === "true";
+                    cylinderText.setAttribute("visible", !isVisible);
+                });
+            } else {
+                console.error("Cylinder or text not found.");
+            }
+        });
 
 
 
