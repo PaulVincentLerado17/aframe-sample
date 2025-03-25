@@ -60,40 +60,36 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var box = document.querySelector("#resizableBox");
+    // Resizable Box Click Event
+    var box = document.querySelector("#resizableBox");
+    var cylinder = document.querySelector("#clickableCylinder");
+    var cylinderText = document.querySelector("#cylinderText");
 
-            if (box) {
-                // Listen for clicks on the box
-                box.addEventListener("click", function (event) {
-                    event.stopPropagation(); // Prevent event bubbling
+    if (box) {
+        box.addEventListener("click", function (event) {
+            event.stopPropagation(); // Prevent event bubbling
 
-                    // Get current scale and toggle it
-                    var currentScale = box.getAttribute("scale") || { x: 1, y: 1, z: 1 };
-                    var newScale = currentScale.x === 1 ? { x: 2, y: 2, z: 2 } : { x: 1, y: 1, z: 1 };
+            // Parse current scale
+            var currentScale = box.getAttribute("scale") ? box.getAttribute("scale").split(" ").map(parseFloat) : [1, 1, 1];
+            var newScale = currentScale[0] === 1 ? "2 2 2" : "1 1 1";
 
-                    box.setAttribute("scale", newScale);
-                });
-            } else {
-                console.error("Resizable box not found. Ensure the marker is being detected.");
-            }
+            box.setAttribute("scale", newScale);
         });
+    } else {
+        console.error("Resizable box not found.");
+    }
 
-
-
-
-        document.addEventListener("DOMContentLoaded", function () {
-            var cylinder = document.querySelector("#clickableCylinder");
-            var cylinderText = document.querySelector("#cylinderText");
-
-            if (cylinder && cylinderText) {
-                cylinder.addEventListener("click", function () {
-                    var isVisible = cylinderText.getAttribute("visible") === "true";
-                    cylinderText.setAttribute("visible", !isVisible);
-                });
-            } else {
-                console.error("Cylinder or text not found.");
-            }
+    // Cylinder Click Event
+    if (cylinder && cylinderText) {
+        cylinder.addEventListener("click", function () {
+            var isVisible = cylinderText.getAttribute("visible") === "true";
+            cylinderText.setAttribute("visible", !isVisible);
         });
+    } else {
+        console.error("Cylinder or text not found.");
+    }
+});
+
 
 
 
