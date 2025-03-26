@@ -125,7 +125,7 @@ if (side) {
         }
 
         var randomColor = getRandomColor();
-        box.setAttribute("color", randomColor);
+        side.setAttribute("color", randomColor); // Fix: Change the color of 'side', not 'box'
     });
 } else {
     console.error("Interactive cube side not found. Ensure the marker is being detected.");
