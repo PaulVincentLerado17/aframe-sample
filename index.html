@@ -17,7 +17,8 @@
         <!-- Cube Marker -->
         <a-marker type="pattern" url="./car.patt">
             <a-entity position="0 0.5 0">
-                <a-box id="cube" position="0 0.5 0" rotation="0 45 0" material="opacity: 1; side: double;" scale="1 1 1">
+                <a-box id="cube" position="0 0.5 0" rotation="0 45 0" material="opacity: 1; side: double;" scale="1 1 1"
+                       animation="property: rotation; to: 0 405 0; loop: true; dur: 5000; easing: linear;">
                     <a-box id="side1" position="0 0 0.505" width="1" height="1" depth="0.02" color="#FF0000" class="cube-side"></a-box>
                     <a-box id="side2" position="0 0 -0.505" width="1" height="1" depth="0.02" color="#00FF00" rotation="0 180 0" class="cube-side"></a-box>
                     <a-box id="side3" position="-0.505 0 0" width="1" height="1" depth="0.02" color="#0000FF" rotation="0 90 0" class="cube-side"></a-box>
